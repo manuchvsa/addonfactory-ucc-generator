@@ -20,7 +20,7 @@ jobs:
     outputs:
       matrix_supportedSplunk: ${{ steps.matrix.outputs.supportedSplunk }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: matrix
         uses: splunk/addonfactory-test-matrix-action@v3.0
 
@@ -28,7 +28,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install-latest.sh | bash
           fossa analyze --debug
@@ -56,7 +56,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
@@ -72,7 +72,7 @@ jobs:
   compliance-copyrights:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: apache/skywalking-eyes@v0.7.0
 
   build-ui:
@@ -100,16 +100,16 @@ jobs:
       - build-ui
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         if: "! github.event.pull_request.head.repo.fork "
         with:
           name: THIRDPARTY
@@ -140,7 +140,7 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -175,8 +175,8 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
@@ -204,11 +204,11 @@ jobs:
     needs:
       - build-ui
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
@@ -258,11 +258,11 @@ jobs:
           - "9"
           - "10"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: Splunk_TA_UCCExample-raw-output
           path: output/
@@ -307,7 +307,7 @@ jobs:
           - "self-service"
           - "splunk_appinspect"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
@@ -337,8 +337,8 @@ jobs:
         tags:
           - "cloud"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
         with:
           name: Splunk_TA_UCCExample-packaged
           path: build/package
@@ -362,11 +362,11 @@ jobs:
     needs:
       - build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.7"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
@@ -406,11 +406,11 @@ jobs:
       matrix:
         splunk: ${{ fromJson(needs.meta.outputs.matrix_supportedSplunk) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
@@ -480,7 +480,7 @@ jobs:
       contents: read
     if: "! github.event.pull_request.head.repo.fork "
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Very important: semantic-release won't trigger a tagged
           # build if this is not set false
@@ -491,11 +491,11 @@ jobs:
       - name: install UI deps
         uses: ./.github/actions/cached-ui-deps
       - run: curl -sSL https://install.python-poetry.org | python3 - --version 1.5.1
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: UCC-UI-build
           path: built-ui/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: THIRDPARTY
       - run: cp -f THIRDPARTY NOTICE
